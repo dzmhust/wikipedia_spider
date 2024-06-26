@@ -18,6 +18,60 @@ NEWSPIDER_MODULE = "wiki_spider.spiders"
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
+# Obey robots.txt rules
+#状态码设置
+HTTPERROR_ALLOWED_CODES = [500,405, 404, 403, 302,400, 100, 301,302]
+# Configure maximum concurrent requests performed by Scrapy (default: 16)
+#CONCURRENT_REQUESTS = 32
+RETRY_HTTP_CODES = [502, 503, 504, 522, 524, 408]
+
+# robots.txt规则
+ROBOTSTXT_OBEY = False
+# 并发请求数,保护当前机器请求的带宽不超出负载
+# CONCURRENT_REQUESTS = 100
+CONCURRENT_REQUESTS = 5
+# 对一个网站的最大并发数
+CONCURRENT_REQUESTS_PER_DOMAIN = 50
+# 对一个IP的最大并发数
+CONCURRENT_REQUESTS_PER_IP = 50
+# 同时处理的Item数量
+CONCURRENT_ITEMS = 200
+# 下载超时
+DOWNLOAD_TIMEOUT = 360
+# 下载延迟5s,请求太频繁，ip容易被封
+DOWNLOAD_DELAY = 5
+# 使用自定义的cookie，而不是scrapy自身的cookie
+COOKIES_ENABLED = True
+
+DOWNLOADER_MIDDLEWARES = {
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware':None,
+    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware':None,
+    'scrapy.downloadermiddlewares.retry.RetryMiddleware':None,
+    'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+}
+
+# item管道
+ITEM_PIPELINES = {
+    'wiki_spider.pipelines.mysql.MysqlPipeline':100,
+}
+
+# mysql配置
+MYSQL_CONFIG = {
+    'host':'127.0.0.1',
+    'port':3306,
+    'db':'wiki',
+    'user':'root',
+    'password':'123456',
+    'pool_size':5
+}
+
+# REDIS
+REDIS_CONFIG = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 7
+}
+
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
